@@ -1,0 +1,95 @@
+<script src="../tinytest.js"></script>
+
+<script>
+//filter([1,2,3], function () {
+  //console.log('hi');
+//});
+
+//filter([1,2,3], function (number) {
+  //console.log(number);
+//});
+
+//example 3
+//The index of the current element being processed in the array
+//filter([1,2,3], function (number, index) {
+  //console.log(index);
+
+//});
+
+//example 4
+//filter([1,2,3], function (number, index, originalArray) {
+  //console.log(originalArray);
+//});
+//eample 5
+//filter([1,2,3], function () {
+//  console.log(this.name);
+//}{name: 'Gordon'});
+
+//example 6
+//var testArray = [1, 2, 3];
+//var filteredArray = filter(testArray, function() {});
+//testArray !== filteredArray;
+
+//example 7
+//var testArray = [1, 2, 3];
+//var filteredArray = filter(testArray, function(element, index, array) {
+//  console.log(element, index, array);
+//  return element > 1;
+//});
+//expect filteredArray to be [2, 3]
+
+function filter(originalArray, callback, optionalThis) {
+  var filterCallback = callback;
+
+  if (optionalThis) {
+    filterCallback = callback.bind(optionalThis)
+  }
+  for (var i = 0; i < originalArray.length; i++) {
+    filterCallback(originalArray[i], i, originalArray);
+  }
+};
+
+tests({
+    'It should run the callback function array.length times.': function() {
+       var numberOfTimesCallbackHasRun = 0;
+       filter([1,2,3], function () {
+         numberOfTimesCallbackHasRun++;
+       });
+       eq(numberOfTimesCallbackHasRun, 3);
+     },
+
+    'It should pass in the ith element as the first argument to the callback.': function() {
+       filter([1], function (number) {
+         eq(number, 1);
+       })
+    },
+
+    'It should pass in the ith position as the second argument to the callback.': function () {
+       filter([1], function (number, position) {
+         eq(position, 0);
+       })
+    },
+
+    'It should pass in the original array as the third argument to the callback.': function () {
+       var testArray = [1];
+       filter(testArray, function (number, position, originalArray) {
+         eq(testArray, originalArray);
+       })
+    },
+
+    'It should accept an optional this argument.': function () {
+       filter([1], function (number, position, originalArray) {
+         eq(this.description, 'I am an optional this')
+       }, {description: 'I am an optional this'})
+    },
+
+    'It should return a new array, not the array being filtered.': function () {
+       
+    },
+
+    'It should return a new array that only has elements where callback is true.' : function () {
+      fail();
+    },
+
+  });
+</script>
