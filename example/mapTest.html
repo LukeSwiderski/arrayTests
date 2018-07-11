@@ -44,10 +44,19 @@
 // })
 // mappedArray === [1, 2, 3]
 
+function map(originalArray, callback) {
+  for (var i = 0; i < originalArray.length; i++) {
+    callback();
+  }
+};
 
 tests({
     'It should run the callback function array.length times.': function() {
-    fail();
+      var numberOfTimesCallbackHasRun = 0;
+      map([1, 2, 3], function() {
+        numberOfTimesCallbackHasRun++;
+      });
+      eq(numberOfTimesCallbackHasRun, 3);
      },
 
     'It should pass in the ith element as the first argument to the callback.': function() {
