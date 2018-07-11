@@ -44,9 +44,15 @@
 // })
 // mappedArray === [1, 2, 3]
 
-function map(originalArray, callback) {
+function map(originalArray, callback, optionalThis) {
+  var mapCallback = callback;
+
+  if (optionalThis) {
+    mapCallback = callback.bind(optionalThis);
+  }
+
   for (var i = 0; i < originalArray.length; i++) {
-    callback(originalArray[i]);
+    mapCallback(originalArray[i], i, originalArray);
   }
 };
 
@@ -67,15 +73,22 @@ tests({
     },
 
     'It should pass in the ith position as the second argument to the callback.': function () {
-      fail();
+      map([1], function(number, position) {
+        eq(position, 0);
+      });
     },
 
     'It should pass in the original array as the third argument to the callback.': function () {
-      fail();
+      var testArray = [1];
+      map(testArray, function(number, position, originalArray) {
+        eq(testArray, originalArray);
+      })
     },
 
     'It should accept an optional this argument.': function () {
-      fail();
+      map([1], function(number, position, originalArray) {
+        eq(this.description, 'I am an optional this statement')
+      }, {description: 'I am an optional this statement'});
     },
 
     'It should return an array' : function () {
