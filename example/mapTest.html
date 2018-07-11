@@ -46,7 +46,7 @@
 
 function map(originalArray, callback) {
   for (var i = 0; i < originalArray.length; i++) {
-    callback();
+    callback(originalArray[i]);
   }
 };
 
@@ -60,7 +60,10 @@ tests({
      },
 
     'It should pass in the ith element as the first argument to the callback.': function() {
-    fail();
+      map([1], function(number) {
+        eq(number, 1);
+      });
+
     },
 
     'It should pass in the ith position as the second argument to the callback.': function () {
