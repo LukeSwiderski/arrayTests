@@ -1,0 +1,82 @@
+<script src="../tinytest.js"></script>
+
+<script>
+
+// example 1
+// map([1, 2, 3], function() {
+//   console.log('hi');
+// });
+
+// example 2
+// map([1, 2, 3], function(number) {
+//   console.log(number);
+// });
+
+// example 3
+// map([1, 2, 3], function(number, index) {
+//   console.log(index);
+//});
+
+// example 6
+// map([1, 2, 3], function(number, index, array) {
+// console.log(array)
+// });
+
+// example 5
+// map([1], function()  {
+//   console.log(this.description)
+//}, {description: 'I am an optional this'});
+
+// example 6
+// var mappedArray = map([], function() {});
+// (Array.isArray(mappedArray), true)
+
+//example 7
+// var testArray = [1, 2, 3]
+// var mappedArray = map(testArray, function() {});
+// mappedArray !== testArray
+
+// example 8
+// creates a new array with the results of calling a provided
+// function on every element in the calling array.
+// var mappedArray = map([1, 4, 9], function (element) {
+//   Math.sqrt;
+// })
+// mappedArray === [1, 2, 3]
+
+
+tests({
+    'It should run the callback function array.length times.': function() {
+    fail();
+     },
+
+    'It should pass in the ith element as the first argument to the callback.': function() {
+    fail();
+    },
+
+    'It should pass in the ith position as the second argument to the callback.': function () {
+      fail();
+    },
+
+    'It should pass in the original array as the third argument to the callback.': function () {
+      fail();
+    },
+
+    'It should accept an optional this argument.': function () {
+      fail();
+    },
+
+    'It should return an array' : function () {
+    fail();
+    },
+
+    'It should return a new array, not the array being filtered.': function () {
+    fail();
+    },
+
+    'It should return a new array with the results of the callback interated on every element.' : function () {
+      fail();
+    },
+
+  });
+</script>
