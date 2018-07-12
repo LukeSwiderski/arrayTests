@@ -100,7 +100,7 @@ tests({
       eq(Array.isArray(mappedArray), true);
     },
 
-    'It should return a new array, not the array being filtered.': function() {
+    'It should return a new array, not the array being mapped.': function() {
       var testArray = [1, 2, 3];
       var mappedArray = map(testArray, function() {});
       eq(testArray !== mappedArray, true);
