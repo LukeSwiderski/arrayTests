@@ -1,12 +1,77 @@
 <script src="../tinytest.js"></script>
 
 <script>
+// example 1
+// reduce([1, 2, 3], function() {
+//   console.log('hi');
+//});
+
+// example 2
+// reduce([1, 2, 3], function(accumulator) {
+//   console.log(accumulator);
+// });
+
+// example 3
+// reduce([1, 2, 3], function(accumulator, currentValue) {
+//   console.log(currentValue);
+// });
+
+// example 4
+// reduce([1, 2, 3], function(accumulator, currentValue, indexPosition) {
+//   console.log(indexPosition);
+// });
+
+// example 5
+// reduce ([1, 2, 3], function(accumulator, currentValue, indexPosition, originalArray) {
+//   console.log(originalArray);
+// });
+
+// example 6
+// reduce([1], function() {
+//   console.log(initialValue);
+// }, initialValue);
+
+// example 7
+// reduce([1, 2, 3], function(accumulator, currentValue) {
+//   return accumulator + currentValue;
+// });
+// expected output: 6
+
+// example 8
+// reduce([1, 2], function(accumulator, currentValue, indexPosition) {
+//   return accumulator + currentValue;
+// });
+// (accumulator === 1), (currentValue === 2) console.log(indexPosition)
+
+// exampe 9
+// reduce([1, 2], function(accumulator, currentValue, indexPosition) {
+//   return accumulator + currentValue;
+// }, 3);
+// (accumulator === 3), (currentValue === 1), (indexPosition === 0)
+
+//example 10
+// reduce([], function() {
+//   return accumulator + currentValue;
+// });
+// expected output: TypeError: "you messed up."
+
+// example 11
+// reduce([1], function() {
+//   accumulator + currentValue;
+// });
+// expected output: 1
+
+// example 12
+// reduce([, 1, 2], function() {
+//   accumulator + currentValue;
+// });
+// expected output: 3
 
 tests({
   'It should run the callback function array.length times.': function() {},
     fail();
 
-  'It should pass in an intial value as the first argument to the callback.': function() {},
+  'It should pass in accumulator  as the first argument to the callback.': function() {},
     fail();
 
   'It should pass in the ith element as the second argument to the callback.': function() {},
@@ -18,7 +83,7 @@ tests({
   'It should pass in the original array as the fourth argument to the callback.': function() {},
     fail();
 
-  'It should accept an optional this argument.': function() {},
+  'It should accept an optional initial value argument.': function() {},
     fail();
 
   'It should accumulate the return values of each iteration of the callback and store them in accumulator variable.': function() {},
