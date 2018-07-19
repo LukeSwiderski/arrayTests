@@ -68,59 +68,61 @@
 // expected output: 3
 
 tests({
-  'It should run the callback function array.length times.': function() {},
+  'It should run the callback function array.length times.': function() {
     fail();
+  },
 
-  'It should pass in accumulator  as the first argument to the callback.': function() {},
+  'It should pass in accumulator  as the first argument to the callback.': function() {
     fail();
+  },
 
-  'It should pass in the ith element as the second argument to the callback.': function() {},
+  'It should pass in the ith element as the second argument to the callback.': function() {
     fail();
+  },
 
-  'It should pass in the ith position as the third argument to the callback.': function() {},
+  'It should pass in the ith position as the third argument to the callback.': function() {
     fail();
+  },
 
-  'It should pass in the original array as the fourth argument to the callback.': function() {},
+  'It should pass in the original array as the fourth argument to the callback.': function() {
     fail();
+  },
 
-  'It should accept an optional initial value argument.': function() {},
+  'It should accept an optional initial value argument.': function() {
     fail();
+  },
 
-  'It should accumulate the return values of each iteration of the callback and store them in accumulator variable.': function() {},
+  'It should accumulate the return values of each iteration of the callback and store them in accumulator variable.': function() {
     fail();
+  },
 
-  'If no intial value is provided, the callback should start with the first element of the array.': function() {},
+  'If no intial value is provided, the callback should start with the first element of the array, accumulator should be equal to the first element of the array, currentValue should be equal to the second element of the array, and the callback should begin at index 1.': function() {
     fail();
+  },
 
-  'If no intial value is provided, accumulator should be equal to the first element of the array.': function() {},
+  'If an inital value is provided, accumulator should be equal to initial value at the start, currentValue should be equal to the first element in the array, and the callback should begin at index 0.': function() {
     fail();
+  },
 
-  'If no intial value is provided, currentValue should be equal to the second element of the array.': function() {},
+  'If an initial value is provided, the callback should begin at index 0.': function() {
     fail();
+  },
 
-  'If no intial value is provided, the callback should begin at index 1.': function() {},
+  'If the array is empty and no intial value is provided, TypeError should be thrown.': function() {
     fail();
+  },
 
-  'If an inital value is provided, accumulator should be equal to initial value at the start.': function() {},
+  'If the array is empty and an intial value is provided, it should return the intial value without calling callback.': function() {
     fail();
+  },
 
-  'If an inital value is provided, currentValue should be equal to the first element in the array at the start.': function() {},
+  'If the array has only one element and no inital value is provided, the callback should not be called and the solo value should be returned.': function() {
     fail();
+  },
 
-  'If an initial value is provided, the callback should begin at index 0.': function() {},
+  'It should skip unassigned indexes.': function() {
     fail();
-
-  'If the array is empty and no intial value is provided, TypeError should be thrown.': function() {},
-    fail();
-
-  'If the array is empty and an intial value is provided, it should return the intial value without calling callback.': function() {},
-    fail();
-
-  'If the array has only one element and no inital value is provided, the callback should not be called and the solo value should be returned.': function() {},
-    fail();
-
-  'It should skip unassigned indexes.': function() {},
-    fail();
+  },
 
 });
 </script>
