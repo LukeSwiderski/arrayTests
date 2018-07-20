@@ -67,29 +67,61 @@
 // });
 // expected output: 3
 
+function reduce(array, callback, intialValue) {
+  var accumulator = '';
+  if (intialValue) {
+    accumulator = intialValue;
+    for (var i = 0; i < array.length; i++) {
+      callback(accumulator, array[i], i, array);
+    }
+  }else {
+    accumulator = '';
+    for (var i = 0; i < array.length; i++) {
+      callback(accumulator, array[i], i, array);
+    }
+  }
+  return accumulator;
+};
+
 tests({
   'It should run the callback function array.length times.': function() {
-    fail();
+    var numberOfTimesCallbackHasRun = 0;
+    reduce([1, 2, 3], function() {
+      numberOfTimesCallbackHasRun++;
+    });
+    eq(numberOfTimesCallbackHasRun, 3);
   },
 
-  'It should pass in accumulator  as the first argument to the callback.': function() {
-    fail();
+  'It should pass in accumulator as the first argument to the callback.': function() {
+    reduce([1], function(accumulator) {
+      return accumulator;
+      eq(accumulator, true);
+    });
   },
 
   'It should pass in the ith element as the second argument to the callback.': function() {
-    fail();
+    reduce([1], function(accumulator, number) {
+      eq(number, 1);
+    });
   },
 
   'It should pass in the ith position as the third argument to the callback.': function() {
-    fail();
+    reduce([1], function (accumulator, number, position) {
+      eq(position, 0);
+    });
   },
 
   'It should pass in the original array as the fourth argument to the callback.': function() {
-    fail();
+    var testArray = [1];
+    reduce(testArray, function(accumulator, number, position, array) {
+      eq(testArray, array);
+    });
   },
 
   'It should accept an optional initial value argument.': function() {
-    fail();
+    reduce([2], function(accumulator, number, position, array) {
+      eq(accumulator, 1);
+    }, 1);
   },
 
   'It should accumulate the return values of each iteration of the callback and store them in accumulator variable.': function() {
