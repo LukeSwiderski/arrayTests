@@ -1,0 +1,107 @@
+<script src="../tinytest.js"></script>
+
+<script>
+// example 1
+// reduce([1, 2, 3], function() {
+//   console.log('hi');
+//});
+
+// example 2
+// reduce([1, 2, 3], function(accumulator) {
+//   console.log(accumulator);
+// });
+
+// example 3
+// reduce([1, 2, 3], function(accumulator, currentValue) {
+//   console.log(currentValue);
+// });
+
+// example 4
+// reduce([1, 2, 3], function(accumulator, currentValue, indexPosition) {
+//   console.log(indexPosition);
+// });
+
+// example 5
+// reduce ([1, 2, 3], function(accumulator, currentValue, indexPosition, originalArray) {
+//   console.log(originalArray);
+// });
+
+// example 6
+// reduce([1], function() {
+//   console.log(initialValue);
+// }, initialValue);
+
+// example 7
+// reduce([1, 2, 3], function(accumulator, currentValue) {
+//   return accumulator + currentValue;
+// });
+// expected output: 6
+
+// example 8
+// reduce([1, 2], function(accumulator, currentValue, indexPosition) {
+//   return accumulator + currentValue;
+// });
+// (accumulator === 1), (currentValue === 2) console.log(indexPosition)
+
+// exampe 9
+// reduce([1, 2], function(accumulator, currentValue, indexPosition) {
+//   return accumulator + currentValue;
+// }, 3);
+// (accumulator === 3), (currentValue === 1), (indexPosition === 0)
+
+//example 10
+// reduce([], function() {
+//   return accumulator + currentValue;
+// });
+// expected output: TypeError: "you messed up."
+
+// example 11
+// reduce([1], function() {
+//   accumulator + currentValue;
+// });
+// expected output: 1
+
+// example 12
+// reduce([, 1, 2], function() {
+//   accumulator + currentValue;
+// });
+// expected output: 3
+
+function reduce(array, callback, startingValue) {
+  var resultSoFar = startingValue;
+  for (var i = 0; i < array.length; i++) {
+    resultSoFar = callback(resultSoFar, array[i], i, array);
+  }
+  return resultSoFar;
+}
+
+tests({
+
+'If initialValue, accumulator should start with intialValue.': function () {},
+
+'If intialValue, currentValue should start with array[0].': function () {},
+
+'If intialValue, callback should start at index 0.': function () {},
+
+'If no initalValue, accumulator should start with array[0] in the array.': function () {},
+
+'If no initialValue, currentValue should start with array[1].': function () {},
+
+'If no initialValue, callback will start at index 1.': function () {},
+
+'It should actually reduce.': function () {},
+
+'It should exclude holes.': function () {},
+
+'It should pass array as fourth argument to the callback.': function () {},
+
+'If array is empty and no intialValue, typeError should be thrown.': function () {},
+
+'If intialValue and the array is empty, return initalValue without calling callback.': function () {},
+
+'If no intialValue, and the array has one element, it should return only element without calling callback.': function () {},
+
+
+
+});
+</script>
