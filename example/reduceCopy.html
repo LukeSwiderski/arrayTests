@@ -67,8 +67,8 @@
 // });
 // expected output: 3
 
-function reduce(array, callback, intitalValue) {
-  var accumulator = intialValue;
+function reduce(array, callback, initialValue) {
+  var accumulator = initialValue;
   for (var i = 0; i < array.length; i++) {
     accumulator = callback(accumulator, array[i], i, array);
   }
@@ -78,7 +78,10 @@ function reduce(array, callback, intitalValue) {
 tests({
 
 'If initialValue, accumulator should start with intialValue.': function () {
-  fail();
+  reduce([1], function adder(accumulator, initialValue) {
+    return accumulator + initialValue;
+    eq(accumulator, 3);
+  }, 2)
 },
 
 'If intialValue, currentValue should start with array[0].': function () {
