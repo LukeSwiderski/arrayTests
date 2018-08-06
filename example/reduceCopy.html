@@ -67,37 +67,74 @@
 // });
 // expected output: 3
 
+// function reduce(array, callback, initialValue) {
+//   var accumulator = initialValue;
+//   for (var i = 0; i < array.length; i++) {
+//     accumulator = callback(accumulator, array[i], i, array);
+//   }
+//   return accumulator;
+// }
+
 function reduce(array, callback, initialValue) {
+  var startingIndex = 0;
   var accumulator = initialValue;
-  for (var i = 0; i < array.length; i++) {
-    accumulator = callback(accumulator, array[i], i, array);
+
+  if (arguments.length < 3) {
+    accumulator = array[startingIndex];
+    startingIndex++;
   }
-  return accumulator;
+
+  for (var i = startingIndex; i < array.length; i++) {
+    callback(accumulator, array[i], i);
+  }
 }
 
 tests({
 
+'If initialValue, callback should run array.length times': function () {
+  var numberOfTimesCallbackHasRun = 0;
+  reduce([1], function() {
+    numberOfTimesCallbackHasRun++;
+  }, 0);
+  eq(numberOfTimesCallbackHasRun, 1);
+},
+
+'If no initialValue, callback should run array.length -1 times': function () {
+  var numberOfTimesCallbackHasRun = 0;
+  reduce([1], function() {
+    numberOfTimesCallbackHasRun++;
+  });
+  eq(numberOfTimesCallbackHasRun, 0);
+},
+
 'If initialValue, accumulator should start with intialValue.': function () {
-  reduce([1], function adder(accumulator, initialValue) {
-    return accumulator + initialValue;
-    eq(accumulator, 3);
-  }, 2)
+  reduce([1], function(accumulator) {
+    eq(accumulator, 0);
+  }, 0)
 },
 
 'If intialValue, currentValue should start with array[0].': function () {
-  fail();
+  reduce([1], function(accumulator, currentValue) {
+    eq(currentValue, 1);
+  }, 0)
 },
 
 'If intialValue, callback should start at index 0.': function () {
-  fail();
+  reduce([1], function(accumulator, currentValue, currentIndex) {
+    eq(currentIndex, 0);
+  }, 0)
 },
 
 'If no initalValue, accumulator should start with array[0] in the array.': function () {
-  fail();
+  reduce([1, 2], function(accumulator) {
+    eq(accumulator, 1);
+  })
 },
 
 'If no initialValue, currentValue should start with array[1].': function () {
-  fail();
+  reduce([1, 2], function(accumulator, currentValue) {
+    eq(currentValue, 2);
+  })
 },
 
 'If no initialValue, callback will start at index 1.': function () {
