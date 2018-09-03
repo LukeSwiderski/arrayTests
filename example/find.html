@@ -1,0 +1,119 @@
+<script src="../simpleTest.js"></script>
+
+<script>
+
+//Example 1
+//find([1, 2, 3], function() {
+//  console.log('hi');
+//})
+
+//Example 2
+//find([1, 2, 3], function(number) {
+//  console.log(number);
+//})
+
+//Example 3
+//find([1, 2, 3], function(number, position) {
+//  console.log(position);
+//})
+
+//Example 4
+//find([1, 2, 3], function(number, position, array) {
+//  console.log(array);
+//})
+
+//Example 5
+//find([1, 2, 3], function(number) {
+//  console.log(this.description);
+//}, {description: 'OptionalThis'})
+
+//Example 6
+// var result = find([1, 2, 3], function(element) {
+//  return element > 2;
+//})
+//eq(result, 3);
+
+function find(array, callback, optionalThis) {
+  var findCallback = callback;
+
+  if (optionalThis) {
+    findCallback = callback.bind(optionalThis);
+  }
+
+  var isCallbackTrue = false;
+
+  for (var i = 0; i < array.length; i++) {
+    if ((findCallback(array[i], i, array)) === true) {
+      return array[i];
+    };
+    //check each item vs callback
+  }
+
+  //return first element in array that satifies provided testing function
+  /* if ((filterCallback(originalArray[i], i, originalArray)) === true) {
+    filteredArray.push(originalArray[i]);*/
+}
+
+tests({
+  'It should run callback array.length times': function () {
+    var numberOfTimesCallbackHasRun = 0;
+    find([1, 2, 3], function() {
+      numberOfTimesCallbackHasRun++;
+    })
+    eq(numberOfTimesCallbackHasRun, 3);
+  },
+
+  'It should pass in the ith element as the first argument to the calback': function () {
+    find([1], function(number) {
+      eq(number, 1);
+    })
+  },
+
+  'It should pass in the ith position as the second argument to the calback': function () {
+    find([1], function(number, position) {
+      eq(position, 0);
+    })
+  },
+
+  'It should pass in the original array as the third argument to the calback': function () {
+    var testArray = [1, 2, 3];
+    find(testArray, function(number, position, array) {
+      eq(testArray, array);
+    })
+  },
+
+  'It should accept an optional this argument': function () {
+    find([1], function(number, position, array) {
+      eq(this.description, 'I am an optional this statement');
+    }, {description: 'I am an optional this statement'})
+  },
+
+  'If no optionalThis, this will be undefined': function () {
+    find([1], function(number, position, array) {
+      eq(this.description, undefined);
+    })
+  },
+
+  'It should return the value of the first element in the array that satisfies the provided testing function': function () {
+    var result = find([1, 2, 3], function(number) {
+      return number > 1;
+    })
+    eq(result, 2);
+  },
+
+  'If no element satifies the provided testing function, it should return undefined.': function () {
+    var result = find([1, 2], function(number) {
+      return number > 2;
+    })
+    eq(result, undefined);
+  },
+
+  'Callback will run on holes in the array too': function() {
+    var numberOfTimesCallbackHasRun = 0;
+    find([1, , 2, , 3], function() {
+      numberOfTimesCallbackHasRun++;
+    })
+    eq(numberOfTimesCallbackHasRun, 5);
+  }
+});
+</script>
