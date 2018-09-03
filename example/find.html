@@ -39,10 +39,11 @@ function find(array, callback, optionalThis) {
   if (optionalThis) {
     findCallback = callback.bind(optionalThis);
   }
+  //determine number of items in testArray
+  //determine the index for the loop to stop.
+  var endingIndex = array.length;
 
-  var isCallbackTrue = false;
-
-  for (var i = 0; i < array.length; i++) {
+  for (var i = 0; i < endingIndex; i++) {
     if ((findCallback(array[i], i, array)) === true) {
       return array[i];
     };
@@ -114,6 +115,36 @@ tests({
       numberOfTimesCallbackHasRun++;
     })
     eq(numberOfTimesCallbackHasRun, 5);
+  },
+
+  'The callback should not run on any element appended to the array after the call to find begins': function() {
+    var numberOfTimesCallbackHasRun = 0;
+    find([1, 2, 3], function(number, position, array) {
+      numberOfTimesCallbackHasRun++;
+      if (array.length < 4) {
+        array.push(5);
+      }
+    })
+    eq(numberOfTimesCallbackHasRun, 3);
+  },
+
+  'If an existing, unvisited element of the array is changed by callback, its value passed to the visiting callback will be the value at the time that find visits that elements index': function() {
+    var result = find([1, 2], function(number, position, array) {
+      array[1] = 3;
+      return number > 2;
+    })
+    eq(result, 3);
+  },
+
+  'It should call callback on deleted elements': function() {
+    var numberOfTimesCallbackHasRun = 0;
+    find([1, 2], function(number, position, array) {
+      numberOfTimesCallbackHasRun++;
+      if (position === 0) {
+        delete array[1];
+      }
+    })
+    eq(numberOfTimesCallbackHasRun, 2);
   }
 });
 </script>
