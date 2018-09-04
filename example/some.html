@@ -1,0 +1,125 @@
+<script src="../simpleTest.js"></script>
+
+<script>
+
+function some(array, callback, optionalThis) {
+  var someCallback = callback;
+
+  if (optionalThis) {
+    someCallback = callback.bind(optionalThis);
+  }
+
+  var callbackReturnTrue = false;
+  var endingIndex = array.length;
+
+  for (var i = 0; i < endingIndex; i++) {
+    if (i in array) {
+      if ((someCallback(array[i], i, array)) === true) {
+        callbackReturnTrue = true;
+        return true;
+      }else {
+        callbackReturnTrue = false;
+      }
+    }
+  }
+  if (callbackReturnTrue === false) {
+    return false;
+  }
+}
+
+tests({
+
+  'It should pass in the ith element as the first argument to the calback.': function () {
+    some([1], function(number) {
+      eq(number, 1);
+    })
+  },
+
+  'It should pass in the ith position as the second argument to the calback.': function () {
+    some([1], function(number, position) {
+      eq(position, 0);
+    })
+  },
+
+  'It should pass in the original array as the third argument to the calback.': function () {
+    var testArray = [1, 2, 3];
+    some(testArray, function(number, position, array) {
+      eq(testArray, array);
+    })
+  },
+
+  'It should accept an optional this argument.': function () {
+    some([1], function() {
+      eq(this.description, 'I am an optional this statement.')
+    }, {description: 'I am an optional this statement.'})
+  },
+
+  'If any element in the array passes the provided test, it should immediately return true': function () {
+    var result = some([1, 2, 3], function(number) {
+      return number > 0;
+    })
+    eq(result, true);
+  },
+
+  'If no elements in the array pass the provided test, it should return false.': function () {
+    var result = some([1, 2, 3], function(number) {
+      return number > 3;
+    })
+    eq(result, false);
+  },
+
+  'If no elements in array pass the provided test, callback should run array.length times.': function () {
+    var numberOfTimesCallbackHasRun = 0;
+    var result = some([1, 2, 3], function(number) {
+      numberOfTimesCallbackHasRun++;
+      return number > 4;
+    })
+    eq(result, false);
+    eq(numberOfTimesCallbackHasRun, 3);
+  },
+
+  'The callback should not run on any element appended to the array after the call to some begins.': function () {
+    var numberOfTimesCallbackHasRun = 0;
+    result = some([1], function(number, position, array) {
+      if (position === 0) {
+        array.push(2);
+      }
+      numberOfTimesCallbackHasRun++;
+      return number > 1;
+    })
+    eq(result, false);
+    eq(numberOfTimesCallbackHasRun, 1);
+  },
+
+  'If an existing, unvisited element of the array is changed by callback, its value passed to the visiting callback will be the value at the time that some visits that elements index.': function () {
+    var result = some([1, 2, 3], function(number, position, array) {
+      if (position === 0) {
+        array[2] = 4;
+      }
+      return number > 3;
+    })
+    eq(result, true);
+  },
+
+  'It should skip holes': function () {
+    var numberOfTimesCallbackHasRun = 0;
+    var result = some([1, , 2, , 3], function () {
+      numberOfTimesCallbackHasRun++;
+    })
+    eq(numberOfTimesCallbackHasRun, 3);
+  },
+
+  'It should skip deleted elements': function () {
+    var numberOfTimesCallbackHasRun = 0;
+    var result = some([1, 2, 1], function(number, position, array) {
+      numberOfTimesCallbackHasRun++;
+      if (position === 0) {
+        delete array[1];
+      }
+      return number > 1;
+    })
+    eq(numberOfTimesCallbackHasRun, 2);
+    eq(result, false);
+  }
+});
+</script>
