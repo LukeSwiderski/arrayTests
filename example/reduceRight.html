@@ -163,5 +163,27 @@ tests({
     eq(testArray, array);
   })
 },
+
+'The callback should not run on any element appended to the array after the call to find begins': function() {
+  var numberOfTimesCallbackHasRun = 0;
+  reduceRight([1, 2, 3], function(accumulator, currentValue, currentIndex, array) {
+    numberOfTimesCallbackHasRun++;
+    if (array.length < 4) {
+      array.push(5);
+    }
+  })
+  eq(numberOfTimesCallbackHasRun, 2);
+},
+
+'If an existing, unvisited element of the array is changed by callback, its value passed to the visiting callback will be the value at the time that find visits that elements index': function() {
+  var result = reduceRight([1, 2, 3], function(accumulator, currentValue, currentIndex, array) {
+    if (index = 2) {
+      array[0] = 2;
+    }
+    return accumulator + currentValue;
+  })
+  eq(result, 7);
+},
+
 });
 </script>
