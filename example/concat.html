@@ -15,7 +15,9 @@ function concat() {
     for (var i = 0; i < numberOfArguments; i++) {
       var currentArgument = arguments[startingIndex];
       if (Array.isArray(currentArgument)) {
-        result.push(currentArgument[i]);
+        for (var j = 0; j < currentArgument.length; j++) {
+          result.push(currentArgument[j]);
+        }
       }else{
         result.push(currentArgument);
       }
