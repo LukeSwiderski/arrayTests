@@ -18,7 +18,7 @@ function reduceRight(array, callback, initialValue) {
 
   if (arguments.length < 3) {
     if (Object.keys(array).length === 0) {
-      throw new TypeError('You done messed up, son!');
+      throw new TypeError('Reduce of empty array with no initial value.');
     }
 
     if (Object.keys(array).length === 1) {
@@ -26,6 +26,7 @@ function reduceRight(array, callback, initialValue) {
       var singleElement = array[singleIndex];
       return singleElement;
     }
+
     accumulator = array[length - dynamicCurrentValue];
     startingIndex--;
     dynamicCurrentValue++;
@@ -36,11 +37,8 @@ function reduceRight(array, callback, initialValue) {
   }
 
   for (var i = startingIndex; i > 0; i--) {
-    if ((i - 1) in array) {//(i - 1) because startingIndex = length.  if length = 5, last index = 4, hence i - 1.
+    if ((i- 1) in array) {
       accumulator = callback(accumulator, array[length - dynamicCurrentValue], i - 1, array);
-      dynamicCurrentValue++;
-    }else {
-      dynamicCurrentValue++;
     }
   }
   return accumulator;
@@ -134,14 +132,14 @@ tests({
 },
 
 'If intitialValue, it should exclude holes.': function () {
-  var sum = reduceRight([, 1, 2,, 3], function(a, b) {
+  var sum = reduceRight([, 1, 2,, 3, ,], function(a, b) {
     return a + b;
   }, 0)
   eq(sum, 6);
 },
 
 'If no initialValue, it should exclude holes too.': function () {
-  var sum = reduceRight([, 1, 2,, 3], function(a, b) {
+  var sum = reduceRight([, 1, 2,, 3, ,], function(a, b) {
     return a + b;
   })
   eq(sum, 6);
