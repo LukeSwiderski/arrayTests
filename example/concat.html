@@ -1,0 +1,35 @@
+<script src="../simpleTest.js"></script>
+
+<script>
+
+function concat() {
+  var result = []
+  if (arguments) {
+    var numberOfArguments = arguments.length;//determine number of arguments
+    var startingIndex = numberOfArguments;
+
+    while (startingIndex > 0) {
+      startingIndex--;
+    }
+
+    for (var i = 0; i < numberOfArguments; i++) {
+      var currentArgument = arguments[startingIndex];
+      if (Array.isArray(currentArgument)) {
+        result.push(currentArgument[i]);
+      }else{
+        result.push(currentArgument);
+      }
+      startingIndex++;
+    }
+  }
+  return result;
+  console.log(result);
+}
+
+
+// tests({
+//
+//
+//
+// });
+</script>
