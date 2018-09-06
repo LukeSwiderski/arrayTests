@@ -11,10 +11,8 @@
 // }
 
 function reduceRight(array, callback, initialValue) {
-  var length = array.length;
-  var startingIndex = length;
+  var startingIndex = array.length - 1;
   var accumulator = initialValue;
-  var dynamicCurrentValue = 1;//amount to subtract from length
 
   if (arguments.length < 3) {
     if (Object.keys(array).length === 0) {
@@ -26,19 +24,20 @@ function reduceRight(array, callback, initialValue) {
       var singleElement = array[singleIndex];
       return singleElement;
     }
-
-    accumulator = array[length - dynamicCurrentValue];
+    while (startingIndex in array === false && startingIndex > -1) {
+      startingIndex--;
+    }
+    accumulator = array[startingIndex];
     startingIndex--;
-    dynamicCurrentValue++;
   }
 
   if (Object.keys(array).length === 0) {
     return initialValue;
   }
 
-  for (var i = startingIndex; i > 0; i--) {
-    if ((i- 1) in array) {
-      accumulator = callback(accumulator, array[length - dynamicCurrentValue], i - 1, array);
+  for (var i = startingIndex; i > -1; i--) {
+    if (i in array) {
+      accumulator = callback(accumulator, array[i], i, array);
     }
   }
   return accumulator;
@@ -139,7 +138,7 @@ tests({
 },
 
 'If no initialValue, it should exclude holes too.': function () {
-  var sum = reduceRight([, 1, 2,, 3, ,], function(a, b) {
+  var sum = reduceRight([ , 1, 2,, 3,,], function(a, b) {
     return a + b;
   })
   eq(sum, 6);
