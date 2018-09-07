@@ -25,50 +25,108 @@ function concat() {
     }
   }
   return result;
-  console.log(result);
 }
 
 
 tests({
 
-'It should create a new array.': function () {
-  fail();
+'It should return an array.': function () {
+  var newArray = concat(1, 2, 3);
+  eq(Array.isArray(newArray), true);
 },
 
-'The new array should consist of the elements in the object on which it was called.': function () {
-  fail();
+'It should return a new array, not the array(s) being concatenated.': function () {
+  var testArray1 = [1, 2, 3];
+  var testArray2 = [4, 5, 6];
+  var newArray = concat(testArray1, testArray2);
+  eq(newArray != testArray1, true);
+  eq(newArray != testArray2, true);
 },
 
-'The elements in the new array should be in order as they appear in the arguments': function () {
-  fail();
+'The new array should consist of the elements in the argument on which it was called.': function () {
+  var newArray = concat(4, 5, 6);
+  eq(newArray[0], 4);
+  eq(newArray[1], 5);
+  eq(newArray[2], 6);
+  eq(newArray.length === 3, true);
 },
 
-'It should copy object references into the new array': function () {
-  fail()
+'If an argument is an array, it should iterate over the array and add each value from old array(s) to new array.': function () {
+  var testArray = [1, 2, 3];
+  var newArray = concat(testArray);
+  eq(newArray[0], 1);
+  eq(newArray[1], 2);
+  eq(newArray[2], 3);
 },
 
-'If an object is changed, it should change inside the new array too': function () {
-  fail();
+'If the argument is not an array, it should just push that element onto the new array.': function () {
+  var newArray = concat(1, 2);
+  eq(newArray[0], 1);
+  eq(newArray[1], 2);
 },
 
-'If an argument is an array, it should iterate over the array and add each value from old array(s) to new array': function () {
-  fail();
+'It should not alter original arrays that are passed as arguments.': function () {
+  var testArray = [1]
+  var newArray = concat(testArray);
+  newArray[0] = 2;
+  eq(testArray[0], 1);
 },
 
-'If the argument is not an array, it should push that element onto the new array': function () {
-
+'The elements in the new array should be in order as they appear in the arguments.': function () {
+  var newArray = concat(4, 5, 6);
+  eq(newArray[0], 4);
+  eq(newArray[1], 5);
+  eq(newArray[2], 6);
 },
 
-'It should not alter original arrays that are passed as arguments': function () {
-  fail()
+'It should copy object references into the new array.': function () {
+  var myObject = {cheese: 'burger'};
+  var newArray = concat(myObject);
+  eq(newArray[0].cheese, myObject.cheese)
+},
+
+'If an object reference copy that was concatenated is changed, the change should be visible inside the new array too.': function () {
+  var myObject = {cheese: 'burger'};
+  var newArray = concat(myObject);
+  myObject.cheese = 'pizza';
+  eq(newArray[0].cheese, 'pizza');
+  eq(myObject.cheese, 'pizza');
+},
+
+'If an object reference copy that was concatenated is changed inside the new array, the change should be visible inside the original object too.': function () {
+  var myObject = {cheese: 'burger'};
+  var newArray = concat(myObject);
+  newArray[0].cheese = 'pizza';
+  eq(newArray[0].cheese, 'pizza');
+  eq(myObject.cheese, 'pizza');
+},
+
+'If an element of an array argument that is also an array is changed inside of the new array, the change should be visible inside the original array too.': function () {
+  var testArray = [[1]];
+  var newArray = concat(testArray);
+  newArray[0][0] = 2;
+  eq(testArray[0][0], [2]);
+},
+
+'If an element of an array argument that is also an array is changed inside of the original array, the change should be visible inside the new array too.': function () {
+  var testArray = [[1]];
+  var newArray = concat(testArray);
+  testArray[0][0] = 2;
+  eq(newArray[0][0], [2]);
 },
 
 'It should copy data types such as strings, booleans and numbers and push them to new array.': function () {
-
+  var newArray = concat('string', true, 27);
+  eq(newArray[0], 'string');
+  eq(newArray[1], true);
+  eq(newArray[2], 27);
 },
 
-'It should accept unlimited arguments': function () {
-  
+'It should not recurse nested arrays.': function () {
+  var newArray = concat([1, [2, 3]]);
+  eq(newArray[0], 1);
+  eq(newArray[1][0], 2);
+  eq(newArray[1][1], 3);
 }
 
 });
