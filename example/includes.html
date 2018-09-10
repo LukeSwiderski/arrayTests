@@ -1,0 +1,59 @@
+<script src="../simpleTest.js"></script>
+
+<script>
+
+function includes(array, element, fromIndex) {
+  var startingIndex = 0;
+
+  if (fromIndex) {
+    startingIndex = fromIndex;
+    if (fromIndex < 0) {
+      startingIndex = array.length + fromIndex;
+    }
+  }
+  for (var i = startingIndex; i < array.length; i++) {
+    if (array[i] === element) {
+      return true;
+    }
+  }
+  return false;
+}
+
+tests({
+
+'If the array contains the search element, it should return true.':function () {
+  var result = includes([1], 1);
+  eq(result, true);
+},
+
+'If the array does not contain the search element, it should return false.': function () {
+  var result = includes([1], 2);
+  eq(result, false);
+},
+
+'If fromIndex, an optional index parameter to start from is provided, it should start at that index.': function () {
+  var result = includes([1, 2, 3], 1, 1);
+  eq(result, false);
+},
+
+'If no fromIndex is provided, it should start at index 0.': function () {
+  var result = includes([1, 2, 3], 1);
+  eq(result, true);
+},
+
+'If fromIndex is negative, it should start at array.length + fromIndex.': function () {
+  var result = includes([1, 2, 3], 1, -2);
+  eq(result, false);
+},
+
+'If fromIndex is greater or equal to array.length, it should return false.': function () {
+  var result = includes([1], 1, 2);
+  eq(result, false);
+},
+
+'If fromIndex is negative, the computed index is calculated to be used as a position in the array at which to begin searching for search element. If the computed index is less than 0, the entire array will be searched.': function () {
+  var result = includes([1, 2, 3], 2, -100);
+  eq(result, true);
+}
+});
+</script>
