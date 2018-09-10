@@ -2,39 +2,59 @@
 
 <script>
 
+function indexOf(array, element, indexFrom) {
+  var startingIndex = 0;
+
+  if (indexFrom) {
+    startingIndex = indexFrom;
+    if (indexFrom < 0) {
+      startingIndex = array.length + indexFrom;
+    }
+  }
+  for (var i = startingIndex; i < array.length; i++) {
+    if (array[i] === element) {
+      return i;
+    }
+  }
+  return -1;
+};
+
 tests({
 
-'It should accept a search element parameter': function () {
-  fail();
-},
-
-'It should accept an optional fromIndex parameter': function () {
-  fail();
-},
-
 'It should return the first index in the array of the element specified.': function () {
-  fail();
+  var result = indexOf([1, 2, 3], 2);
+  eq(result, 1);
 },
 
 'If the element specified is not found, it should return -1.': function () {
-  fail();
+  var result = indexOf([1, 2, 3], 4);
+  eq(result, -1);
 },
 
 'If a fromIndex parameter is provided, it should start from that index.': function () {
-  fail();
+  var result = indexOf([2, 1, 2], 2, 1);
+  eq(result, 2);
 },
 
 'If no fromIndex is provided, it should start at array[0].': function () {
-  fail();
+  var result = indexOf([2, 1], 2);
+  eq(result, 0);
 },
 
 'If the indexFrom is greater than or equal to array.length, it should return -1': function () {
-  fail();
+  var result = indexOf([2, 1], 2, 2);
+  eq(result, -1);
 },
 
 'If the indexFrom parameter is negative, it should start offset, the value of the parameter from the end of the array': function () {
-  fail();
+  var result = indexOf([2, 1, 2], 2, -1);
+  eq(result, 2);
 },
+
+'If indexFrom is 0, it should start at array[0].': function () {
+  var result = indexOf([2, 1, 2], 2, 0);
+  eq(result, 0);
+}
 
 
 
