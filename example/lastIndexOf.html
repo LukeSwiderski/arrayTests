@@ -1,0 +1,63 @@
+<script src="../simpleTest.js"></script>
+
+<script>
+
+function lastIndexOf(array, element, fromIndex) {
+  var startingIndex = array.length - 1;
+
+  if (fromIndex) {
+    startingIndex = fromIndex;
+    if (fromIndex < 0) {
+      startingIndex = array.length + fromIndex;
+      if (startingIndex < 0) {
+        return -1;
+      }
+    }
+  }
+
+  for (var i = startingIndex; i > -1; i--) {
+    if (element === array[i]) {
+      return i;
+    }
+  }
+  return -1;
+};
+
+tests({
+
+'It should return the index of the last occurence of a specified value in an object.': function () {
+  var result = lastIndexOf([1, 2, 1], 1);
+  eq(result, 2);
+},
+
+'If the specified value is not found, it should return -1.': function () {
+  var result = lastIndexOf([1, 2, 3], 4);
+  eq(result, -1);
+},
+
+'If fromIndex, it should start from array[fromIndex] and work backwards': function () {
+  var result = lastIndexOf([3, 2, 3], 3, 1);
+  eq(result, 0);
+},
+
+'If no fromIndex is provided, it should search the whole array': function () {
+  var result = lastIndexOf([3, 2, 3], 3);
+  eq(result, 2);
+},
+
+'If fromIndex >= array.length, it should search the whole array.': function () {
+  var result = lastIndexOf([3, 2, 3], 3, 3);
+  eq(result, 2);
+},
+
+'If fromIndex is negative, it should start offset from the end of the array and work backwards': function () {
+  var result = lastIndexOf([3, 2, 3], 3, -2);
+  eq(result, 0);
+},
+
+'If fromIndex is negative and its computed value is less than zero, it should return -1.': function () {
+  var result = lastIndexOf([1, 2, 3], 1, -100);
+  eq(result, -1);
+}
+});
+</script>
