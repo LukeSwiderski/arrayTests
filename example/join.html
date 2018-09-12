@@ -2,38 +2,85 @@
 
 <script>
 
+function join(array, separator) {
+  var accumulator = '';
+
+  for (var i = 0; i < array.length; i++) {
+    if (arguments.length > 1) {//if there is a separator parameter:
+      if (separator === '') {//if separator is an empty string
+        if (array[i] === undefined || array[i] === null) {
+            accumulator = accumulator;
+        }else {//
+            accumulator = accumulator + array[i];
+        }
+      }else {//if separator is anything other than an empty string
+        if (array[i] === undefined || array[i] === null) {
+          accumulator = accumulator + separator;
+        }else {
+          accumulator = accumulator + array[i];
+          if (accumulator.length > 0 && i !== array.length - 1) {
+            accumulator = accumulator + separator;
+          }
+        }
+      }
+    }else {//if there is no separator parameter.
+      if (array[i] === undefined || array[i] === null) {
+        accumulator = accumulator + ',';
+      }else {
+        accumulator = accumulator + array[i];
+        if (accumulator.length > 0 && i !== array.length - 1) {
+          accumulator = accumulator + ',';
+        }
+      }
+    }
+  }
+  return accumulator;
+}
+
 tests({
 
 'It should return a string.': function () {
-  fail();
+  var result = join([1]);
+  eq(typeof result, 'string');
 },
 
-'It should join elements in an array into one string.': function () {
-  fail();
-},
-
-'If separator parameter is present, elements in the array will be joined with separator between them.': function () {
-  fail();
+'It should join all the elements in an array into one string.': function () {
+  var result = join([1, 2, 3]);
+  eq(result, '1,2,3');
 },
 
 'If separator is not present, it should separate elements with a comma.': function () {
-  fail();
+  var result = join([1, 2, 3]);
+  eq(result, '1,2,3');
+},
+
+'If separator parameter is present, elements in the array will be joined with separator between them.': function () {
+  var result = join([1, 2, 3], '-');
+  eq(result, '1-2-3');
 },
 
 'If separator is an empty string, it should join elements without any characters between them.': function () {
-  fail();
+  var result = join([1, 2, 3], '');
+  eq(result, '123');
 },
 
 'It should convert separator into a string if necessary.': function () {
-  fail();
+  var result = join([1, 2, 3], true);
+  eq(result, '1true2true3');
 },
 
 'If arr.length is 0, it should return an empty string.': function () {
-  fail();
+  var result = join([]);
+  eq(result, '');
 },
 
 'If an element is undefined or null, it is converted to an empty string.': function () {
-  fail();
+  var result = join([undefined, null, 3], '*');
+  var result1 = join([undefined, null, 2], '');
+  var result2 = join([undefined, null, 1]);
+  eq(result, '**3');
+  eq(result1, '2');
+  eq(result2, ',,1')
 },
 });
 </script>
