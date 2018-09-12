@@ -6,33 +6,24 @@ function join(array, separator) {
   var accumulator = '';
 
   for (var i = 0; i < array.length; i++) {
+    if (array[i] === undefined || array[i] === null) {
+      array[i] = '';
+    }
     if (arguments.length > 1) {//if there is a separator parameter:
       if (separator === '') {//if separator is an empty string
-        if (array[i] === undefined || array[i] === null) {
-            accumulator = accumulator;
-        }else {//
             accumulator = accumulator + array[i];
-        }
       }else {//if separator is anything other than an empty string
-        if (array[i] === undefined || array[i] === null) {
-          accumulator = accumulator + separator;
-        }else {
           accumulator = accumulator + array[i];
-          if (accumulator.length > 0 && i !== array.length - 1) {
+          if (accumulator.length >= 0 && i !== array.length - 1) {
             accumulator = accumulator + separator;
           }
-        }
       }
     }else {//if there is no separator parameter.
-      if (array[i] === undefined || array[i] === null) {
+      accumulator = accumulator + array[i];
+      if (accumulator.length >= 0 && i !== array.length - 1) {//keeps commas and separators from the beginning and ends of strings
         accumulator = accumulator + ',';
-      }else {
-        accumulator = accumulator + array[i];
-        if (accumulator.length > 0 && i !== array.length - 1) {
-          accumulator = accumulator + ',';
         }
       }
-    }
   }
   return accumulator;
 }
