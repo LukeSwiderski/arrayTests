@@ -1,0 +1,155 @@
+<script src="../simpleTest.js"></script>
+
+<script>
+
+function slice(array, begin, end) {
+  var newArray = [];
+  var startingIndex = 0;
+  var length = array.length;
+  var endingIndex = length;
+
+  if (arguments.length === 1) {
+    return newArray;
+  }
+
+  if (begin) {
+    startingIndex = begin;
+    if (begin < 0) {
+      startingIndex = length + begin;
+    }
+    if (begin > length) {
+      return newArray;
+    }
+  }
+
+  if (end) {
+    endingIndex = end;
+    if (end < 0) {
+      endingIndex = length + end;
+    }
+    if (end > length) {
+      endingIndex = length;
+    }
+  }
+
+  for (var i = startingIndex; i < endingIndex; i++) {
+    newArray.push(array[i]);
+  }
+  return newArray;
+}
+
+tests({
+
+'It should return an array.': function () {
+  newArray = slice([1, 2, 3], 0, 3);
+  eq(Array.isArray(newArray), true);
+},
+
+'It should return a new array, not one being accessed.': function () {
+  var testArray = [1, 2, 3];
+  var newArray = slice(testArray);
+  eq(testArray !== newArray, true)
+},
+
+'It should a return a new array consisting of all the elements from the begin parameter to just before the end parameter.': function () {
+  var testArray = [1, 2, 3];
+  var newArray = slice(testArray, 1, 2);
+  eq(newArray[0], 2);
+  eq(newArray.length === 1, true);
+},
+
+'The original array should not be modified.': function () {
+  var testArray = [0];
+  var newArray = slice(testArray, 0);
+  newArray[0] = 1;
+  eq(testArray[0], 0);
+},
+
+'If begin is negative, it should indicate an offset from the end of the sequence.': function () {
+  var testArray = [1, 2, 3];
+  var newArray = slice(testArray, -2, 2);
+  eq(newArray[0], 2);
+  eq(newArray.length === 1, true);
+},
+
+'If begin is undefined, slice begins from index 0.': function () {
+  var testArray = [1, 2, 3];
+  var newArray = slice(testArray, undefined, 2);
+  eq(newArray[0], 1);
+  eq(newArray[1], 2);
+  eq(newArray.length === 2, true);
+},
+
+'If begin is greater than the length of the sequence, an empty array is returned.': function () {
+  var testArray = [1, 2, 3];
+  var newArray = slice(testArray, 4, 3);
+  eq(newArray.length === 0, true);
+},
+
+'If end is negative, it should offset from the end of the array array.length + end.': function () {
+  var testArray = [1, 2];
+  var newArray = slice(testArray, 0, -1);
+  eq(newArray.length === 1, true);
+  eq(newArray[0], 1);
+},
+
+'If end is ommitted, it should extract through the end of the array.': function () {
+  var testArray = [1, 2];
+  var newArray = slice(testArray, 0);
+  eq(newArray.length === 2, true);
+  eq(newArray[0], 1);
+  eq(newArray[1], 2);
+},
+
+'If end is greater than the length of the sequence, it should extract though the end.': function () {
+  var testArray = [1, 2];
+  var newArray = slice(testArray, 0, 3);
+  eq(newArray.length === 2, true);
+  eq(newArray[0], 1);
+  eq(newArray[1], 2);
+},
+
+'It should copy object references.': function () {
+  var myObject = {cheese: 'burger'};
+  var testArray = [1, myObject, 3];
+  var newArray = slice(testArray, 1, 2);
+  eq(newArray[0].cheese, 'burger');
+},
+
+'If an object reference is changed, it should be visible in both the object and the copy.': function () {
+  var myObject = {cheese: 'burger'};
+  var testArray = [1, myObject, 3];
+  var newArray = slice(testArray, 1, 2);
+  myObject.cheese = 'pizza';
+  eq(newArray[0].cheese, 'pizza');
+},
+
+'It should copy the value of strings, numbers and booleans onto the new array.': function () {
+  var testArray = ['string', 2, true];
+  var newArray = slice(testArray, 0, 3);
+  eq(newArray[0], 'string');
+  eq(newArray[1], 2);
+  eq(newArray[2], true);
+},
+
+'If a string, number or boolean is changed in new array, it should not be visible in the original array.': function () {
+  var testArray = ['string', 2, true];
+  var newArray = slice(testArray, 0, 3);
+  newArray[2] = false;
+  eq(testArray[2], true);
+},
+
+'If a new element is added to either array, it should not affect the other.': function () {
+  var testArray = ['string', 2, true];
+  var newArray = slice(testArray, 0, 3);
+  newArray.push(4);
+  eq(testArray.length === 3, true);
+},
+
+'If no begin or end it should return an empty array': function () {
+  var testArray = [1, 2, 3];
+  var newArray = slice(testArray);
+  eq(newArray.length === 0, true);
+}
+});
+</script>
