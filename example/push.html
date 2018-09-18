@@ -1,0 +1,52 @@
+<script src="../simpleTest.js"></script>
+
+<script>
+
+function push(array) {
+  if (Array.isArray(arguments[0]) === false) {
+    throw new TypeError('Not an array');
+  }
+  for (var i = 1; i < arguments.length; i++) {
+    array[array.length] = arguments[i];
+  }
+  return array.length;
+};
+
+tests({
+
+'It should append values to an array.': function () {
+  var testArray = [1];
+  push(testArray, 2);
+  eq(testArray[1], 2);
+},
+
+'It should return the new length of the array.': function () {
+  var testArray = [1];
+  var result = push(testArray, 2);
+  eq(result, 2);
+},
+
+'It should be able to accept more than one element arguments (in addition to array argument)': function () {
+  var testArray = [1];
+  push(testArray, 2, 3, 4);
+  eq(testArray.length, 4);
+},
+
+'If no arguments to push are given, it should return the current length.': function () {
+  var testArray = [1];
+  var result = push(testArray);
+  eq(result, 1);
+},
+
+'If array has no length, it should throw a type error': function () {
+  var isTypeError = false;
+  var object = {1: 2};
+  try {
+    push(object);
+  }catch(e) {
+    isTypeError = (e instanceof TypeError);
+  }
+  eq(isTypeError, true);
+},
+});
+</script>
