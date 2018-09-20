@@ -2,18 +2,36 @@
 
 <script>
 
+function shift(array) {
+  var firstEl = array[0];
+  array.splice(0, 1);
+  return firstEl;
+}
+
 tests({
 
   'It should remove the first element from an array.': function () {
-    fail();
+    var testArray = [1, 2];
+    eq(testArray.length, 2);
+    shift(testArray);
+    eq(testArray.length, 1);
   },
 
   'It should return the element that has been removed from the begining of the array.': function () {
-    fail();
+    var result = shift([1, 2]);
+    eq(result, 1);
   },
 
-  'If the array is empty, it should return undefined.': function () {
-    fail();
+  'If the array length is zero, it should return undefined.': function () {
+    var result = shift([]);
+    eq(result, undefined);
+  },
+
+  'It should shift the values at consectutive index down': function () {
+    var testArray = [1, 2];
+    eq(testArray[0], 1);
+    shift(testArray);
+    eq(testArray[0], 2);
   },
 });
 </script>
