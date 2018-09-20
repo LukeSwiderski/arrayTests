@@ -2,14 +2,33 @@
 
 <script>
 
+function unshift(array) {
+  for (var i = arguments.length - 1; i > 0; i--) {
+    array.splice(0, 0, arguments[i]);
+  }
+  return array.length;
+}
+
 tests({
 
   'It should add one or more elements to the begining of an array': function () {
-    fail();
+    var testArray = [2];
+    var result = unshift(testArray, 1);
+    eq(testArray[0], 1);
+    eq(testArray.length, 2);
+  },
+
+  'It should add elements to the array, the last argument first, first argument last': function () {
+    var testArray = [2];
+    var result = unshift(testArray, 0, 1);
+    eq(testArray[0], 0);
+    eq(testArray[1], 1);
+    eq(testArray[2], 2);
   },
 
   'It should return the new length of the array': function () {
-    fail();
+    var result = unshift([3], 1, 2);
+    eq(result, 3);
   },
 });
 </script>
