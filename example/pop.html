@@ -2,18 +2,30 @@
 
 <script>
 
+function pop(array) {
+  var lastEl = array[array.length - 1];
+  var spliceIndex = array[array.length - 2];
+  array.splice(spliceIndex, 1);
+  return lastEl;
+}
+
 tests({
 
   'It should remove the last element from an array.': function () {
-    fail();
+    var testArray = [1, 2];
+    eq(testArray.length, 2);
+    pop(testArray);
+    eq(testArray.length, 1);
   },
 
   'It should return the element that has been removed from the end of the array.': function () {
-    fail();
+    var result = pop([1, 2, 3]);
+    eq(result, 3);
   },
 
   'If the array is empty, it should return undefined.': function () {
-    fail();
+    var result = pop([]);
+    eq(result, undefined);
   },
 });
 </script>
