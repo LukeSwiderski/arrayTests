@@ -2,54 +2,136 @@
 
 <script>
 
+function fill(array, value, start, end) {
+  var startingIndex = 0;
+  var endingIndex = array.length;
+
+  if (arguments.length > 3) {
+    if (isNaN(arguments[3])) {
+      return array;
+    }
+  }
+  if (end === null) {
+    return array;
+  }
+
+  if (start) {
+    startingIndex = start;
+    if (start < 0) {
+      startingIndex = array.length + start;
+    }
+  }
+  if (end) {
+    endingIndex = end;
+    if (end < 0) {
+      endingIndex = array.length + end;
+    }
+  }
+
+  for (var i = startingIndex; i < endingIndex; i++) {
+    array[i] = value;
+  }
+  return array;
+}
+
 tests({
 
 'It should fill an array with a specified static value.': function () {
-  fail();
+  var testArray = [1]
+  fill(testArray, 0);
+  eq(testArray[0], 0);
 },
 
 'It should return the modified array.': function () {
-  fail();
+  var testArray = [1]
+  var result = fill(testArray, 0);
+  eq(result, testArray);
 },
 
 'If given a start index, it should begin filling the array from the start index.': function () {
-  fail();
+  var testArray = [1, 2]
+  fill(testArray, 0, 1);
+  eq(testArray[0], 1);
+  eq(testArray[1], 0);
 },
 
 'If given an end index, it should stop filling the array one index before the given end index.': function () {
-  fail();
+  var testArray = [0, 0, 0, 0, 0];
+  fill(testArray, 1, 1, 3);
+  eq(testArray[0], 0);
+  eq(testArray[1], 1);
+  eq(testArray[2], 1);
+  eq(testArray[3], 0);
+  eq(testArray[4], 0);
 },
 
 'If no start index is given, it should start at index 0.': function () {
-  fail();
+  var testArray = [1, 2, 3];
+  fill(testArray, 0);
+  eq(testArray[0], 0);
+  eq(testArray[1], 0);
+  eq(testArray[2], 0);
+
 },
 
 'If no end index is given, it should end at array.length.': function () {
-  fail();
+  var testArray = [1, 2, 3];
+  fill(testArray, 0, 0);
+  eq(testArray[0], 0);
+  eq(testArray[1], 0);
+  eq(testArray[2], 0);
+
 },
 
 'If start value is negative, it should begin at length + start.': function () {
-  fail();
+  var testArray = [1, 2, 3];
+  fill(testArray, 0, -2);
+  eq(testArray[0], 1);
+  eq(testArray[1], 0);
+  eq(testArray[2], 0);
 },
 
 'If end value is negative, it should end at length + end.': function () {
-  fail();
+  var testArray = [1, 2, 3];
+  fill(testArray, 0, 0, -1);
+  eq(testArray[0], 0);
+  eq(testArray[1], 0);
+  eq(testArray[2], 3);
 },
 
-'If index arguments are NaN or null, it should not fill the array.': function () {
-  fail();
+'If end index argument is null, it should not fill the array, it should return array unchanged.': function () {
+  var testArray = [1, 2, 3];
+  fill(testArray, 0, 0, null);
+  eq(testArray[0], 1);
+  eq(testArray[1], 2);
+  eq(testArray[2], 3);
+},
+
+'If end index argument is specifically NaN, it should not fill the array, it should return array unchanged.': function () {
+  var testArray = [1, 2, 3];
+  fill(testArray, 0, 0, NaN);
+  eq(testArray[0], 1);
+  eq(testArray[1], 2);
+  eq(testArray[2], 3);
 },
 
 'If start index is NaN or null, default to 0.': function () {
-  fail();
-},
-
-'If end index is NaN or null, default to length - 1.': function () {
-  fail();
+  var testArray = [1, 2, 3];
+  fill(testArray, 0, NaN, 3);
+  eq(testArray[0], 0);
+  eq(testArray[1], 0);
+  eq(testArray[2], 0);
+  fill(testArray, 0, null, 3);
+  eq(testArray[0], 0);
+  eq(testArray[1], 0);
+  eq(testArray[2], 0);
 },
 
 'If an object is passed in, it should copy the object reference and fill array with references to that object.': function () {
-  fail();
+  var myObject = {name: 'Luke'};
+  var testArray = [1, 2, 3];
+  var result = fill(testArray, myObject, 0, 1);
+  eq(testArray[0].name, 'Luke');
 }
 });
 </script>
