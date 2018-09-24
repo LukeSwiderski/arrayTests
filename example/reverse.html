@@ -24,5 +24,14 @@ tests({
   eq(testArray[2], 1);
 },
 
+'It should return the reverse array.': function () {
+  var testArray = [1, 2, 3];
+  var result = reverse(testArray);
+  eq(testArray, result);
+  eq(testArray[0], 3);
+  eq(testArray[1], 2);
+  eq(testArray[2], 1);
+}
+
 });
 </script>
