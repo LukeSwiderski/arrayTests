@@ -1,0 +1,28 @@
+<script src="../simpleTest.js"></script>
+
+<script>
+
+function reverse(array) {
+  var newArray = [];
+
+  for (var i = 0; i < array.length; i++) {
+    newArray[i] = array[(array.length - 1) - i];
+  }
+  for (var i = 0; i < array.length; i++) {
+    array[i] = newArray[i];
+  }
+  return array;
+}
+
+tests({
+
+'It should reverse the order of an array.': function () {
+  var testArray = [1, 2, 3];
+  reverse(testArray);
+  eq(testArray[0], 3);
+  eq(testArray[1], 2);
+  eq(testArray[2], 1);
+},
+
+});
+</script>
