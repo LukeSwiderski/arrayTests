@@ -42,6 +42,12 @@ tests({
   eq(testArray[2], 1);
 },
 
+'It should return the same array.': function () {
+  var testArray = [1, 2, 3];
+  var result = reverse(testArray);
+  eq(testArray, result);
+},
+
 'It should not skip holes.': function () {
   var testArray = [, 1, , 2, ,];
   var result = reverse(testArray);
