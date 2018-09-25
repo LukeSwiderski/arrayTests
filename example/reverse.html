@@ -9,13 +9,22 @@ function reverse(array) {
     newArray[i] = array[(array.length - 1) - i];
   }
   for (var i = 0; i < array.length; i++) {
-    array[i] = newArray[i];
+    if (i in array) {
+      array[i] = newArray[i];
+    }else {
+      delete array[i];
+    }
   }
   return array;
 }
 
 tests({
 
+'It should return an array': function () {
+  var testArray = [1, 2, 3];
+  var result = reverse(testArray);
+  eq(Array.isArray(result), true);
+},
 'It should reverse the order of an array.': function () {
   var testArray = [1, 2, 3];
   reverse(testArray);
@@ -31,7 +40,17 @@ tests({
   eq(testArray[0], 3);
   eq(testArray[1], 2);
   eq(testArray[2], 1);
-}
+},
+
+'It should not skip holes.': function () {
+  var testArray = [, 1, , 2, ,];
+  var result = reverse(testArray);
+  eq(0 in result, false);
+  eq(1 in result, true);
+  eq(2 in result, false);
+  eq(3 in result, true);
+  eq(4 in result, false);
+},
 
 });
 </script>
