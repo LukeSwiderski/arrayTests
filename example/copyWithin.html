@@ -4,53 +4,44 @@
 
 function copyWithin(array, target, start, end) {
   var storageArray = [];
-
-  for (var i = 0; i < array.length; i++) {//populates the storage array with the same amount of items as the original.
-    storageArray.push(undefined);
-    delete storageArray[i];
-  }
-
-  var storageIndexBegin = 0;
-  var storageIndexEnd = array.length;
+  var startingIndex = 0;
+  var endingIndex = array.length;
 
   if (start) {
-    storageIndexBegin = start;
+    startingIndex = start;
     if (start < 0) {
-      storageIndexBegin = start + array.length;
+      startingIndex = start + array.length;
     }
   }
+
   if (end) {
-    storageIndexEnd = end;
+    endingIndex = end;
+    if (end < 0) {
+      endingIndex = end + array.length;
+    }
   }
 
-  for (var i = storageIndexBegin; i < storageIndexEnd; i++) {//populates the storage array with copied sequence, puts them in the same indices they were in original array.
+  for (var i = startingIndex; i < endingIndex; i++) {//populates the storage array with copied sequence, puts them in the same indices they were in original array.
     if (i in array) {
       storageArray[i] = array[i];
     }else {
       delete storageArray[i];
     }
-  }
-  var storageArrayIndex = 0;
-  if (start) {
-    storageArrayIndex = start;
-    if (start < 0) {
-      storageArrayIndex = start + array.length;
-    }
-  }
+  };
 
   if (target < 0) {
     target += array.length;
   }
   var originalArrayIndex = target;
-  var whenToEnd = storageIndexEnd - storageIndexBegin + target;
+  var whenToEnd = endingIndex - startingIndex + target;
 
   for (var i = target; i < whenToEnd; i++) {//populates original array with copied item(s)
-    if (storageArrayIndex in storageArray) {
-      array[originalArrayIndex] = storageArray[storageArrayIndex];
+    if (startingIndex in storageArray) {
+      array[originalArrayIndex] = storageArray[startingIndex];
     }else {
       delete array[originalArrayIndex];
     }
-    storageArrayIndex++;
+    startingIndex++;
     originalArrayIndex++;
   }
   return array;
@@ -145,7 +136,7 @@ tests({
   'If negative, end should be counted from the end of the array.': function () {
     var testArray = [1, 2, 3, 4];
     copyWithin(testArray, 0, 1, -2);
-    eq(testArray[1], 2);
+    eq(testArray[0], 2);
   },
 
   'If end is omitted, it should copy until the end of the array.':  function () {
