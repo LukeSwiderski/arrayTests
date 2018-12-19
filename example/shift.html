@@ -3,8 +3,11 @@
 <script>
 
 function shift(array) {
-  var firstEl = array[0];
-  array.splice(0, 1);
+  if (array.length === 0) {
+    return undefined;
+  }
+  var originalArray = Array.prototype.slice.call(array);
+  var firstEl = Array.prototype.splice.call(array, 0, 1);
   return firstEl;
 }
 
@@ -33,5 +36,17 @@ tests({
     shift(testArray);
     eq(testArray[0], 2);
   },
+
+  'It should be generic and work on array-like objects': function () {
+    var obj = {0: 'zero',
+           1: 'one',
+           2: 'two',
+           length: 3};
+
+  eq(obj[0], 'zero');
+  var result = shift(obj);
+  eq(result, 'zero');
+  eq(obj[0], 'one');
+  }
 });
 </script>
