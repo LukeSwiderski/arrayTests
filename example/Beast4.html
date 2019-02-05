@@ -1,0 +1,92 @@
+<script src="../simpleTest.js"></script>
+<script>
+//before any callback has run, check and see if it has already run once.
+(function () {
+
+var libraryStorage = {};
+
+  function librarySystem(libraryName, array, callback) {
+    //if more than one argument.
+    if (arguments.length > 1) {
+      //if array is populated.
+      if (array.length > 0) {
+        //if library has dependencies, store callback and dependencies.
+        libraryStorage[libraryName] = {
+          callback: callback,
+          dependencies: array
+        }
+      }else {//if array is not
+        libraryStorage[libraryName] = callback();
+      }
+
+    }else {//only one argument: retrieve library.
+        if (libraryStorage[libraryName].callback instanceof Function) {
+          //map the stored dependencies into an array to use below in 'apply'
+          var callbackArguments = libraryStorage[libraryName].dependencies.map(function(element) {
+            return libraryStorage[element];
+          })
+          //call with saved callback and saved dependencies.
+        return libraryStorage[libraryName].callback = libraryStorage[libraryName].callback.apply(null, callbackArguments);
+      }//if libraryName doesn't have callback or dep properties, it's ready to load.
+        return libraryStorage[libraryName];
+      }
+    }
+  window.libraryStorage = libraryStorage;
+  window.librarySystem = librarySystem;
+})();
+
+// tests({
+//
+//   'If three parameters are provided, it should create a library under the name of the first parameter.': function () {
+//     librarySystem('app1', [], function() {
+//       return 'app1';
+//     });
+//
+//     var result = librarySystem('app1');
+//
+//     eq(result, 'app1');
+//   },
+//
+//   'If only one parameter is provided, it should return the library named by that parameter.': function () {
+//     librarySystem('app', [], function() {
+//       return 'app';
+//     })
+//
+//     var result = librarySystem('app');
+//
+//     eq(result, 'app');
+//   },
+//
+//   'If three parameters are provided and the second paramter (array) is populated, it should be able to use the array items as parameters in the callback.': function () {
+//     librarySystem('name', [], function() {
+//       return 'Gordon';
+//     });
+//
+//     librarySystem('company', [], function() {
+//       return 'Watch and Code';
+//     });
+//
+//     librarySystem('workBlurb', ['name', 'company'], function(name, company) {
+//       return name + ' works at ' + company;
+//     });
+//
+//     eq(librarySystem('workBlurb'), 'Gordon works at Watch and Code');
+//   },
+//
+//   'It should be able to load libraries out of order.': function() {
+//     librarySystem('workBlurb2', ['name2', 'company2'], function(name2, company2) {
+//       return name2 + ' works at ' + company2;
+//     });
+//
+//     librarySystem('name2', [], function() {
+//       return 'Luke';
+//     });
+//
+//     librarySystem('company2', [], function() {
+//       return 'Corkscrew';
+//     });
+//
+//     eq(librarySystem('workBlurb2'), 'Luke works at Corkscrew');
+//   },
+// });
+</script>
