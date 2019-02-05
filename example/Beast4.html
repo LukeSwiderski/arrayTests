@@ -10,15 +10,16 @@ var libraryStorage = {};
     if (arguments.length > 1) {
         //if array is populated.
         if (array.length > 0) {
-          //if library has dependencies, store callback and dependencies.
+          //if library has unloaded dependencies, store callback and dependencies.
           libraryStorage[libraryName] = {
             callback: callback,
             dependencies: array
           }
-        }else {//if array is not
+        }else {//if array is empty
           libraryStorage[libraryName] = callback();
         }
     }else {//only one argument: retrieve library.
+        //if the library has stored callback function
         if (libraryStorage[libraryName].callback instanceof Function) {
           //map the stored dependencies into an array to use below in 'apply'
           var callbackArguments = libraryStorage[libraryName].dependencies.map(function(element) {
@@ -30,7 +31,6 @@ var libraryStorage = {};
         return libraryStorage[libraryName];
       }
     }
-  window.libraryStorage = libraryStorage;
   window.librarySystem = librarySystem;
 })();
 
