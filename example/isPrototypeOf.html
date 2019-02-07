@@ -42,15 +42,25 @@ function isPrototypeOf(origin, obj) {
 
 tests({
 
-  'It should return true if second parameter has inherited the first parameter': function() {
+  'It should return true if second parameter has inherited prototype from the first parameter.': function() {
     var result = isPrototypeOf(dog, myDog);
     eq(result, true);
   },
 
-  'If an object has no prototype, it should return false when compared to an obj that has prototype': function() {
+  'If an object has no prototype, it should return false when compared to an obj that has prototype.': function() {
     var result = isPrototypeOf(dog, empty);
     eq(result, false);
   },
+
+  'If an object has prototype at all it should return true.': function() {
+    var result = isPrototypeOf(Object.prototype, myDog);
+    eq(result, true);
+  },
+
+  'If an object has inheritences deeper than one prototype layer, it should return true.': function() {
+    var result = isPrototypeOf(canine, myDog);
+    eq(result, true);
+  }
 
 })
 </script>
