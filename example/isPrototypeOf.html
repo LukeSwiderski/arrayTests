@@ -1,0 +1,56 @@
+<script src="../simpleTest.js"></script>
+<script>
+  var canine = {
+    bark: function() {
+      console.log('bark');
+    }
+  };
+
+  var dog = Object.create(canine);
+  dog.fetch = function() {
+    console.log('fetch');
+  };
+
+  var myDog = Object.create(dog);
+  var empty = Object.create(null);
+//array gets populated with every prototype of object.
+var protoArray = [];
+//function populates the protoArray with obj's prototypes
+function unpackPrototype(obj) {
+  if (obj !== null) {
+    if(Object.getPrototypeOf(obj) !== null) {
+      protoArray.push(Object.getPrototypeOf(obj));
+    }
+    //every loop, obj is reset to one prototype layer deeper.
+    obj = Object.getPrototypeOf(obj);
+    unpackPrototype(obj);
+  }else {
+    return;
+  }
+}
+//compares origin parameter to all of obj's prototypes.
+function isPrototypeOf(origin, obj) {
+  protoArray = [];
+  unpackPrototype(obj);
+  for (var i = 0; i < protoArray.length; i++) {
+    if (origin === protoArray[i]) {
+      return true;
+    }
+  }
+  return false;
+}
+
+tests({
+
+  'It should return true if second parameter has inherited the first parameter': function() {
+    var result = isPrototypeOf(dog, myDog);
+    eq(result, true);
+  },
+
+  'If an object has no prototype, it should return false when compared to an obj that has prototype': function() {
+    var result = isPrototypeOf(dog, empty);
+    eq(result, false);
+  },
+
+})
+</script>
