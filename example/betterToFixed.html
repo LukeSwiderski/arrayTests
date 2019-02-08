@@ -45,7 +45,7 @@ function stringToFixed(value, precision) {
   leftOfDecimal = leftOfDecimal.join('');
   rightOfDecimal = rightOfDecimal.join('');
   //combine both strings into one with position appropriate decimal.
-  result = leftOfDecimal + '.' + rightOfDecimal;
+  var result = leftOfDecimal + '.' + rightOfDecimal;
     //if precision equals zero, don't add a decimal point.
     if (precision === 0) {
       return leftOfDecimal;
