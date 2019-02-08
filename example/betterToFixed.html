@@ -1,0 +1,88 @@
+<script src="../simpleTest.js"></script>
+<script>
+
+function stringToFixed(value, precision) {
+  var string = value + '';
+  //populate an array with each index value of string.
+  var stringArray = Object.values(string);
+  //find the index position of decimal.
+  var decimalPosition = stringArray.indexOf('.');
+  //if no decimal, add one.
+  if (decimalPosition === -1) {
+    stringArray.push('.');
+    decimalPosition = stringArray.indexOf('.');
+  }//split values into seperate arrays, leaving decimal behind.
+  var leftOfDecimal = Object.values(string.slice(0, decimalPosition));
+  var rightOfDecimal = Object.values(string.slice(decimalPosition + 1));
+  //if there are less numbers right of decimal than we want, add zeros.
+  if (rightOfDecimal.length < precision) {
+    while (rightOfDecimal.length < precision)
+    rightOfDecimal.push('0');
+  }
+  if (rightOfDecimal.length > precision && precision !== 0) {
+    //round last number if necessary.
+    if (rightOfDecimal[precision] >= 5) {
+      var secondToLastNumber = rightOfDecimal[precision - 1];
+      var number = Number(secondToLastNumber);
+      number = number + 1 + '';
+      rightOfDecimal[precision - 1] = number;
+    }
+    //take the number of values specified by precision, leave the rest.
+    rightOfDecimal = rightOfDecimal.slice(0, precision);
+  }
+  if (precision === 0 && rightOfDecimal) {
+    if (rightOfDecimal[0] >= 5) {
+      var lastNumber = leftOfDecimal[leftOfDecimal.length - 1];
+      var number = Number(lastNumber);
+      number = number + 1 + '';
+      leftOfDecimal[leftOfDecimal.length - 1] = number;
+    }
+  }
+  //consolidate each array back into a concatonated string.
+  leftOfDecimal = leftOfDecimal.join('');
+  rightOfDecimal = rightOfDecimal.join('');
+  //combine both strings into one with position appropriate decimal.
+  result = leftOfDecimal + '.' + rightOfDecimal;
+    if (precision === 0) {
+      return leftOfDecimal;
+    }
+  return result;
+}
+
+tests({
+
+  'It should round numbers to the nearest decimal, when given a precision parameter less than current amount of decimal places.': function() {
+    var result = stringToFixed(.615, 2);
+    var expected = '0.62';
+    eq(result, expected);
+  },
+
+  'It should round weird numbers like 10.235, and 1.005, that have problems rounding with sum of powers of 2 type value representation.': function() {
+    var result1 = stringToFixed(10.235, 2);
+    var result2 = stringToFixed(1.005, 2);
+    eq(result1, '10.24');
+    eq(result2, '1.01');
+  },
+
+  'If there are less decimal places than indicated by precision, it should add zeros.': function() {
+    var result = stringToFixed(6.5, 3);
+    eq(result, '6.500');
+  },
+
+  'If parameter 1 is an integer and precision is 0, it should return the integer.': function () {
+    var result = stringToFixed(6, 0);
+    eq(result, '6');
+  },
+
+  'If parameter 1 is an integer and precision > 0, it should add a decimal and precision amount of places.': function() {
+    var result = stringToFixed(6, 2);
+    eq(result, '6.00');
+  },
+
+  'If a decimal place is to be rounded and the number nearest to the right is less than 5, it should round down.': function () {
+    var result = stringToFixed(6.434, 2);
+    eq(result, '6.43');
+  }
+
+});
+</script>
