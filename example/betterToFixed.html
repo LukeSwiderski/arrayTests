@@ -21,7 +21,7 @@ function stringToFixed(value, precision) {
   if (rightOfDecimal.length < precision) {
     while (rightOfDecimal.length < precision)
     rightOfDecimal.push('0');
-  }
+  }//if more decimals than precision and precision does not equal zero.
   if (rightOfDecimal.length > precision && precision !== 0) {
     //round last number if necessary.
     if (rightOfDecimal[precision] >= 5) {
@@ -32,7 +32,7 @@ function stringToFixed(value, precision) {
     }
     //take the number of values specified by precision, leave the rest.
     rightOfDecimal = rightOfDecimal.slice(0, precision);
-  }
+  }//Round first digit left of the decimal if necessary.
   if (precision === 0 && rightOfDecimal) {
     if (rightOfDecimal[0] >= 5) {
       var lastNumber = leftOfDecimal[leftOfDecimal.length - 1];
@@ -46,6 +46,7 @@ function stringToFixed(value, precision) {
   rightOfDecimal = rightOfDecimal.join('');
   //combine both strings into one with position appropriate decimal.
   result = leftOfDecimal + '.' + rightOfDecimal;
+    //if precision equals zero, don't add a decimal point.
     if (precision === 0) {
       return leftOfDecimal;
     }
