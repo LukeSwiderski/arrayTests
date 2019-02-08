@@ -5,6 +5,9 @@ function stringToFixed(value, precision) {
   if (precision === undefined) {
     precision = 0;
   }
+  if (isNaN(value)) {
+    throw new TypeError('Value is not a number.');
+  }
   var string = value + '';
   //populate an array with each index value of string.
   var stringArray = Object.values(string);
@@ -93,7 +96,13 @@ tests({
     eq(result, '6');
   },
 
-
+  'If value is not a number, it should throw a TypeError.': function() {
+    try {
+      stringToFixed('Luke');
+    }catch (e) {
+      eq(e instanceof TypeError, true)
+    }
+  }
 
 });
 </script>
