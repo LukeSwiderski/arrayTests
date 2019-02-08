@@ -72,6 +72,10 @@ function isPrecisionNegative(precision) {
 
 tests({
 
+  'It should return a string.': function() {
+    eq(typeof stringToFixed(1, 1) === 'string', true);
+  },
+
   'It should round numbers to the nearest decimal, when given a precision parameter less than current amount of decimal places.': function() {
     var result = stringToFixed(.615, 2);
     var expected = '0.62';
