@@ -2,6 +2,9 @@
 <script>
 
 function stringToFixed(value, precision) {
+  if (precision === undefined) {
+    precision = 0;
+  }
   var string = value + '';
   //populate an array with each index value of string.
   var stringArray = Object.values(string);
@@ -69,20 +72,27 @@ tests({
     eq(result, '6.500');
   },
 
-  'If parameter 1 is an integer and precision is 0, it should return the integer.': function () {
+  'If value is an integer and precision is 0, it should return the integer.': function() {
     var result = stringToFixed(6, 0);
     eq(result, '6');
   },
 
-  'If parameter 1 is an integer and precision > 0, it should add a decimal and precision amount of places.': function() {
+  'If value is an integer and precision > 0, it should add a decimal and precision amount of places.': function() {
     var result = stringToFixed(6, 2);
     eq(result, '6.00');
   },
 
-  'If a decimal place is to be rounded and the number nearest to the right is less than 5, it should round down.': function () {
+  'If a decimal place is to be rounded and the number nearest to the right is less than 5, it should round down.': function() {
     var result = stringToFixed(6.434, 2);
     eq(result, '6.43');
-  }
+  },
+
+  'If precision is undefined, the value of precision should default to 0': function() {
+    var result = stringToFixed(6.434);
+    eq(result, '6');
+  },
+
+
 
 });
 </script>
