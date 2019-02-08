@@ -2,9 +2,12 @@
 <script>
 
 function stringToFixed(value, precision) {
+  //check if precision is undefined.
   if (precision === undefined) {
     precision = 0;
-  }
+  }//check if precision is negative.
+  precision = isPrecisionNegative(precision);
+  //check if value is a number.
   if (isNaN(value)) {
     throw new TypeError('Value is not a number.');
   }
@@ -56,6 +59,17 @@ function stringToFixed(value, precision) {
   return result;
 }
 
+function isPrecisionNegative(precision) {
+  precisionString = String(precision);
+  precisionArray = Object.values(precisionString);
+  if (precisionArray[0] === '-') {
+    precisionArray.splice(0, 1);
+  }
+  precisionString = precisionArray.join('');
+  precision = Number(precisionString);
+  return precision;
+}
+
 tests({
 
   'It should round numbers to the nearest decimal, when given a precision parameter less than current amount of decimal places.': function() {
@@ -102,6 +116,10 @@ tests({
     }catch (e) {
       eq(e instanceof TypeError, true)
     }
+  },
+
+  'If precision is negative, it should use precisions absolute value.': function() {
+    eq(stringToFixed(10.45, -1), '10.5');
   }
 
 });
