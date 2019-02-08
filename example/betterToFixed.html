@@ -5,8 +5,8 @@ function stringToFixed(value, precision) {
   //check if precision is undefined.
   if (precision === undefined) {
     precision = 0;
-  }//check if precision is negative.
-  precision = isPrecisionNegative(precision);
+  }//if precision is negative, make it positive.
+  precision = Math.round(Math.abs(precision));
   //check if value is a number.
   if (isNaN(value)) {
     throw new TypeError('Value is not a number.');
@@ -58,16 +58,7 @@ function stringToFixed(value, precision) {
     }
   return result;
 }
-
-function isPrecisionNegative(precision) {
-  precisionString = String(precision);
-  precisionArray = Object.values(precisionString);
-  if (precisionArray[0] === '-') {
-    precisionArray.splice(0, 1);
-  }
-  precisionString = precisionArray.join('');
-  precision = Number(precisionString);
-  return precision;
+//determine if precision is negative, if it is, make it positive.
 }
 
 tests({
